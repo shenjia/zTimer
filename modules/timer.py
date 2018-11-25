@@ -83,7 +83,7 @@ class Timer:
     def update(self):
         if self.isRunning:
             self.now = pygame.time.get_ticks()
-            self.remainSeconds = math.ceil((self.until - self.now) / 1000)
+            self.remainSeconds = (self.until - self.now) / 1000
             if self.remainSeconds <= 0:
                 self.remainSeconds = 0
                 self.isRunning = False
@@ -138,12 +138,12 @@ class Timer:
 
         # 读秒计时
         if self.isCounting:
-            return str(self.remainSeconds)
+            return str(math.ceil(self.remainSeconds))
         
         # 分钟计时
         else:
-            minutes = math.floor(self.remainSeconds / 60)
-            seconds = self.remainSeconds - minutes * 60
+            minutes = math.floor(math.ceil(self.remainSeconds) / 60)
+            seconds = math.ceil(self.remainSeconds - minutes * 60)
             return str(minutes) + ':' + str(seconds).zfill(2)
 
     @property

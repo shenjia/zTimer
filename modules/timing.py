@@ -128,21 +128,22 @@ class Timing():
         if (key == pygame.K_RETURN):
             self.setup()
 
-        # +：放大字体
+        # + / -：放大缩小字体
         if (key == pygame.K_EQUALS or key == pygame.K_KP_PLUS):
             self.zoomIn()
-
-        # -：缩小字体
         if (key == pygame.K_MINUS or key == pygame.K_KP_MINUS):
             self.zoomOut()
 
-        # 上 / 左：增加时间
-        if (key == pygame.K_UP or key == pygame.K_LEFT):
-            self.timer.plus()
-
-        # 下 / 右：减少时间
-        if (key == pygame.K_DOWN or key == pygame.K_RIGHT):
-            self.timer.minus()
+        # 上 / 下：增加减少一分钟
+        if (key == pygame.K_UP):
+            self.timer.plus(1)
+        if (key == pygame.K_DOWN):
+            self.timer.minus(1)
+        # 左 / 右：增加减少五分钟
+        if (key == pygame.K_LEFT):
+            self.timer.minus(5)
+        if (key == pygame.K_RIGHT):
+            self.timer.plus(5)
 
     def zoomIn(self):
         self.timer.zoomRatio = self.timer.zoomRatio * (1 + c.FONT_ZOOM_RATIO)

@@ -34,7 +34,7 @@ class Timer:
     def stop(self):
         self.isRunning = False
 
-    def plus(self):
+    def plus(self, minutes = 1):
 
         # 不能超过一天
         if self.remainSeconds > 86400:
@@ -50,14 +50,14 @@ class Timer:
 
         # 其他情况以一分钟为单位调整
         else:
-            seconds = 60
+            seconds = 60 * minutes
 
         self.remainSeconds = self.remainSeconds + seconds
         self.until = self.until + seconds * 1000
         if self.isReady:
             self.totalSeconds = self.totalSeconds + seconds
         
-    def minus(self):
+    def minus(self, minutes = 1):
 
         # 时间到了之后不能再调整
         if self.isOver:
@@ -67,13 +67,13 @@ class Timer:
         if self.isCounting:
             return
 
-        # 两分钟以内调整为一分钟
-        if self.remainSeconds < 120:
+        # 最少调整为一分钟
+        if self.remainSeconds - 60 * minutes < 60:
             seconds = self.remainSeconds - 60
 
         # 其他时间以一分钟为单位进行调整
         else:
-            seconds = 60
+            seconds = 60 * minutes
 
         self.remainSeconds = self.remainSeconds - seconds
         self.until = self.until - seconds * 1000

@@ -3,6 +3,7 @@ import pygame
 from configs import constants as c
 from .helpers import *
 
+MUSIC = abspath('resources', 'audios', 'tick.ogg')
 AUDIOS = {}
 
 # 加载音效

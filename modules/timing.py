@@ -46,18 +46,20 @@ class Timing():
         # 背景
         self.screen.fill(c.BLACK)
 
+
         # 显示计时器
         text = self.timer.getText()
         color = self.timer.getColor()
         size = self.timer.getFontSize()
-        font = pygame.font.Font(c.TIMER_FONT, size)
+        font = self.getFont(size, True)
         surface = font.render(text, True, color)
         position = surface.get_rect()
         position.center = self.screenCenter
         self.screen.blit(surface, position)
 
         # 版权信息
-        font = pygame.font.Font(c.LICENSE_FONT, c.LICENSE_SIZE)
+        font = self.getFont(c.LICENSE_SIZE, False)
+        #font = pygame.font.Font(resources.FONTS['license'], c.LICENSE_SIZE)
         surface = font.render(c.LICENSE_TEXT, True, c.LICENSE_COLOR)
         position = surface.get_rect()
         position.center = self.screenBottom
@@ -71,23 +73,24 @@ class Timing():
         pygame.mixer.init()
 
         # 初始化屏幕
-        self.screenResolution = pygame.display.list_modes()[0]
-        self.screenWidth, self.screenHeight = self.screenResolution
+        self.screenWidth, self.screenHeight = pygame.display.list_modes()[0]
         self.screenCenter = (self.screenWidth / 2, self.screenHeight / 2)
         self.screenBottom = (self.screenWidth / 2, self.screenHeight / 1.1)
-        self.screen = pygame.display.set_mode(self.screenResolution, pygame.FULLSCREEN, 32)
+        self.screen = pygame.display.set_mode((self.screenWidth, self.screenHeight), pygame.FULLSCREEN, 32)
 
         # 加载资源
         resources.loadAll()
-        pygame.mixer.music.load(c.MUSIC_TICK)
+        pygame.mixer.music.load(resources.MUSIC)
         pygame.mixer.fadeout(200)
         self.clock = pygame.time.Clock()
 
+        # 初始化计时器
         self.timer = Timer({
             'totalSeconds' : c.DEFAULT_SECONDS,
             'isCountDown' : True,
             'isHide' : True,
-            'callback' : self.playAlarm
+            'screenWidth' : self.screenWidth,
+            'callback' : self.playAlarm,
         })
 
     def playAlarm(self):
@@ -97,8 +100,8 @@ class Timing():
     def playMusic(self):
 
         volume = self.getVolume()
-        pygame.mixer.music.set_volume(volume)        
-        
+        pygame.mixer.music.set_volume(volume)
+
         if not pygame.mixer.music.get_busy():
             pygame.mixer.music.play(loops=1)
 
@@ -106,8 +109,17 @@ class Timing():
 
         # 前几秒渐变
         gap = 60 - self.timer.remainSeconds
-        ratio = gap / c.COUNTING_ZOOM_IN_SECONDS 
+        ratio = gap / c.COUNTING_ZOOM_IN_SECONDS
         return c.COUNTING_VOLUME if ratio > 1 else c.COUNTING_VOLUME * ratio
+
+    def getFont(self, size = 1, bold = False):
+        if c.FONT_NAME in pygame.font.get_fonts():
+            return pygame.font.SysFont(c.FONT_NAME, size, bold)
+        else:
+            filename = c.BOLD_FONT_FILE if bold else c.FONT_FILE
+            filepath = helpers.abspath('resources', 'fonts', filename)
+            return pygame.font.Font(filepath, size)
+
 
     def onKeyDown(self, key):
 

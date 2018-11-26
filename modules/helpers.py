@@ -2,6 +2,10 @@ import math
 import pygame
 import sys, os
 
+# 处理pyinstaller的路径映射
+ROOT = sys._MEIPASS if hasattr(sys, 'frozen') else os.getcwd()
+print(ROOT)
+
 def clamp(value, min, max):
 # 将值限制在一个范围内
     if value < min: return min
@@ -14,12 +18,7 @@ def distance(x, y, Px, Py):
 
 # 生成路径
 def abspath(*path):
-    # 处理pyinstaller的路径映射
-    if getattr(sys, 'frozen', False):
-        root = sys._MEIPASS
-    else:
-        root = os.getcwd()
-    return os.path.join(root, *path)
+    return os.path.join(ROOT, *path)
 
 # 遍历一个目录里的文件
 def walk(dir, walker, exts=()):

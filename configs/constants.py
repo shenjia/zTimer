@@ -10,10 +10,12 @@ ORANGE = (251, 114, 6)
 RED = (255, 0, 0)
 
 # 计时器
-TIMER_FONT = 'resources/fonts/Consolas Bold.ttf'
-TIMER_SIZE = 420
+FONT_NAME = 'consolas'
+FONT_FILE = 'consolas.ttf'
+BOLD_FONT_FILE = 'consolas_bold.ttf'
+TIMER_FONT_RATIO = 0.29
 TIMER_UP = 'TIME UP!'
-TIMER_UP_SIZE = 300
+TIMER_UP_FONT_RATIO = 0.7
 FONT_ZOOM_RATIO = 0.07
 DEFAULT_SECONDS = 600
 WARNING_RATIO = 0.3
@@ -23,7 +25,6 @@ COUNTING_VOLUME = 0.5
 FPS = 30
 
 # 版权信息
-LICENSE_FONT = 'resources/fonts/Consolas.ttf'
 LICENSE_TEXT = 'zTimer v1.0 @ zhangshenjia'
 LICENSE_COLOR = GRAY
 LICENSE_SIZE = 20
@@ -36,4 +37,3 @@ EVENT_OVER = pygame.USEREVENT + 3
 # 资源相关
 IMAGE_EXTS = ('.png', '.jpg', 'bmp')
 AUDIO_EXTS = ('.wav', '.ogg')
-MUSIC_TICK = 'resources/audios/tick.ogg'

@@ -9,6 +9,7 @@ class Timer:
         'until' : 0,
         'now' : 0,
         'zoomRatio' : 1,
+        'screenWidth' : 1440,
         'totalSeconds' : 0,
         'remainSeconds' : 0,
         'isReady': True,
@@ -23,7 +24,6 @@ class Timer:
             setattr(self, key, config[key])
         self.until = self.since + self.totalSeconds * 1000
         self.remainSeconds = self.totalSeconds
-        self.fontSize = c.TIMER_SIZE
 
     def start(self):
         self.isReady = False
@@ -56,7 +56,7 @@ class Timer:
         self.until = self.until + seconds * 1000
         if self.isReady:
             self.totalSeconds = self.totalSeconds + seconds
-        
+
     def minus(self, minutes = 1):
 
         # 时间到了之后不能再调整
@@ -92,13 +92,13 @@ class Timer:
                     self.callback()
 
     def getFontSize(self):
-        fontSize = self.fontSize
+        fontSize = self.screenWidth * c.TIMER_FONT_RATIO
         # 读秒时加大字体
         if self.isCounting:
             fontSize = fontSize * c.COUNTING_FONT_ZOOM_IN_RATIO
         # 时间到时锁定字体
         if self.isTimeup:
-            fontSize = c.TIMER_UP_SIZE
+            fontSize = fontSize * c.TIMER_UP_FONT_RATIO
         return math.ceil(fontSize * self.zoomRatio)
 
     def getPercent(self):
@@ -131,7 +131,7 @@ class Timer:
 
 
     def getText(self):
-        
+
         # 时间到
         if self.isTimeup:
             return c.TIMER_UP
@@ -139,7 +139,7 @@ class Timer:
         # 读秒计时
         if self.isCounting:
             return str(math.ceil(self.remainSeconds))
-        
+
         # 分钟计时
         else:
             minutes = math.floor(math.ceil(self.remainSeconds) / 60)
@@ -149,7 +149,7 @@ class Timer:
     @property
     def isCounting(self):
         return self.remainSeconds > 0 and self.remainSeconds < 60
-    
+
     @property
     def isTimeup(self):
         return self.remainSeconds <= 0

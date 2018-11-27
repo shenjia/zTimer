@@ -14,8 +14,7 @@ class Timer:
         'remainSeconds' : 0,
         'isReady': True,
         'isRunning' : False,
-        'isOver': False,
-        'callback' : None
+        'callback' : None,
     }
 
     def __init__(self, config):
@@ -41,7 +40,7 @@ class Timer:
             return
 
         # 时间到了之后不能再调整
-        if self.isOver:
+        if self.isTimeup:
             return
 
         # 一分钟以下取整到一分钟
@@ -60,20 +59,20 @@ class Timer:
     def minus(self, minutes = 1):
 
         # 时间到了之后不能再调整
-        if self.isOver:
+        if self.isTimeup:
             return
 
-        # 一分钟以内不允许调整
-        if self.isCounting:
-            return
+        # 一分钟以内按秒调整
+        if self.remainSeconds <= 60:
+            seconds = minutes
 
-        # 最少调整为一分钟
-        if self.remainSeconds - 60 * minutes < 60:
-            seconds = self.remainSeconds - 60
-
-        # 其他时间以一分钟为单位进行调整
+        # 其他时间以分钟为单位进行调整
         else:
             seconds = 60 * minutes
+
+        # 不能出现负数
+        if seconds >= self.remainSeconds:
+            return
 
         self.remainSeconds = self.remainSeconds - seconds
         self.until = self.until - seconds * 1000
@@ -87,11 +86,16 @@ class Timer:
             if self.remainSeconds <= 0:
                 self.remainSeconds = 0
                 self.isRunning = False
-                self.isOver = True
+                self.isTimeup = True
                 if self.callback != None:
                     self.callback()
 
-    def getFontSize(self):
+    @property
+    def percent(self):
+        return self.remainSeconds / self.totalSeconds
+
+    @property
+    def fontSize(self):
         fontSize = self.screenWidth * c.TIMER_FONT_RATIO
         # 读秒时加大字体
         if self.isCounting:
@@ -101,10 +105,8 @@ class Timer:
             fontSize = fontSize * c.TIMER_UP_FONT_RATIO
         return math.ceil(fontSize * self.zoomRatio)
 
-    def getPercent(self):
-        return self.remainSeconds / self.totalSeconds
-
-    def getColor(self):
+    @property
+    def color(self):
 
         # 未开始：绿色
         if self.isReady:
@@ -129,8 +131,8 @@ class Timer:
         # 正常计时：黄色
         return c.YELLOW
 
-
-    def getText(self):
+    @property
+    def text(self):
 
         # 时间到
         if self.isTimeup:

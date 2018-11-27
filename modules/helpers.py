@@ -4,7 +4,6 @@ import sys, os
 
 # 处理pyinstaller的路径映射
 ROOT = sys._MEIPASS if hasattr(sys, 'frozen') else os.getcwd()
-print(ROOT)
 
 def clamp(value, min, max):
 # 将值限制在一个范围内

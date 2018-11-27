@@ -35,8 +35,8 @@ class Timing():
         # 更新计时器
         self.timer.update()
 
-        # 播放滴答声
-        if self.timer.isCounting:
+        # 读秒时播放滴答声
+        if self.timer.isCounting and self.timer.isRunning:
             self.playMusic()
         else:
             pygame.mixer.music.stop()
@@ -46,20 +46,15 @@ class Timing():
         # 背景
         self.screen.fill(c.BLACK)
 
-
         # 显示计时器
-        text = self.timer.getText()
-        color = self.timer.getColor()
-        size = self.timer.getFontSize()
-        font = self.getFont(size, True)
-        surface = font.render(text, True, color)
+        font = self.getFont(self.timer.fontSize, True)
+        surface = font.render(self.timer.text, True, self.timer.color)
         position = surface.get_rect()
         position.center = self.screenCenter
         self.screen.blit(surface, position)
 
         # 版权信息
         font = self.getFont(c.LICENSE_SIZE, False)
-        #font = pygame.font.Font(resources.FONTS['license'], c.LICENSE_SIZE)
         surface = font.render(c.LICENSE_TEXT, True, c.LICENSE_COLOR)
         position = surface.get_rect()
         position.center = self.screenBottom
@@ -87,8 +82,6 @@ class Timing():
         # 初始化计时器
         self.timer = Timer({
             'totalSeconds' : c.DEFAULT_SECONDS,
-            'isCountDown' : True,
-            'isHide' : True,
             'screenWidth' : self.screenWidth,
             'callback' : self.playAlarm,
         })
@@ -131,7 +124,7 @@ class Timing():
         if (key == pygame.K_SPACE):
             if self.timer.isRunning:
                 self.timer.stop()
-            elif self.timer.isOver:
+            elif self.timer.isTimeup:
                 self.setup()
             else:
                 self.timer.start()

@@ -31,7 +31,7 @@ VSVersionInfo(
         u'040904B0',
         [StringStruct(u'CompanyName', u'zhangshenjia.com'),
         StringStruct(u'FileDescription', u'A timer for speech or other usage'),
-        StringStruct(u'FileVersion', u'1.0'),
+        StringStruct(u'FileVersion', u'1.1'),
         StringStruct(u'InternalName', u'zTimer'),
         StringStruct(u'LegalCopyright', u'zhangshenjia.com. All rights reserved.'),
         StringStruct(u'OriginalFilename', u'zTimer.EXE'),

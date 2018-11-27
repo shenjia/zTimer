@@ -25,7 +25,7 @@ COUNTING_VOLUME = 0.5
 FPS = 30
 
 # 版权信息
-LICENSE_TEXT = 'zTimer v1.0 @ zhangshenjia'
+LICENSE_TEXT = 'zTimer v1.1 @ zhangshenjia'
 LICENSE_COLOR = GRAY
 LICENSE_SIZE = 20
 

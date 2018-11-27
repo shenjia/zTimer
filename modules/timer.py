@@ -43,11 +43,11 @@ class Timer:
         if self.isTimeup:
             return
 
-        # 一分钟以下取整到一分钟
+        # 一分钟以下以5秒为单位
         if self.isCounting:
-            seconds = 60 - self.remainSeconds
+            seconds = 5 * minutes
 
-        # 其他情况以一分钟为单位调整
+        # 其他情况以一分钟为单位
         else:
             seconds = 60 * minutes
 
@@ -62,9 +62,9 @@ class Timer:
         if self.isTimeup:
             return
 
-        # 一分钟以内按秒调整
+        # 一分钟以内按5秒为单位
         if self.remainSeconds <= 60:
-            seconds = minutes
+            seconds = 5 * minutes
 
         # 其他时间以分钟为单位进行调整
         else:

@@ -96,13 +96,17 @@ class Timer:
 
     @property
     def fontSize(self):
-        fontSize = self.screenWidth * c.TIMER_FONT_RATIO
+
+        # 时间到 / 一小时以上，用小字体
+        if self.isTimeup or self.remainSeconds >= 3600:
+            fontSize = self.screenWidth * c.SMALLER_FONT_RATIO
+        else:
+            fontSize = self.screenWidth * c.BIGGER_FONT_RATIO
+
         # 读秒时加大字体
         if self.isCounting:
             fontSize = fontSize * c.COUNTING_FONT_ZOOM_IN_RATIO
-        # 时间到时锁定字体
-        if self.isTimeup:
-            fontSize = fontSize * c.TIMER_UP_FONT_RATIO
+
         return math.ceil(fontSize * self.zoomRatio)
 
     @property
@@ -138,15 +142,23 @@ class Timer:
         if self.isTimeup:
             return c.TIMER_UP
 
-        # 读秒计时
+        # 读秒
         if self.isCounting:
             return str(math.ceil(self.remainSeconds))
 
-        # 分钟计时
-        else:
+        # 一小时以内
+        elif self.remainSeconds < 3600:
             minutes = math.floor(math.ceil(self.remainSeconds) / 60)
             seconds = math.ceil(self.remainSeconds - minutes * 60)
             return str(minutes) + ':' + str(seconds).zfill(2)
+
+        # 一小时以上
+        else:
+            minutes = math.floor(math.ceil(self.remainSeconds) / 60)
+            seconds = math.ceil(self.remainSeconds - minutes * 60)
+            hours = math.floor(math.ceil(minutes) / 60)
+            minutes = math.ceil(minutes - hours * 60)
+            return str(hours) + ':' + str(minutes).zfill(2) + ':' + str(seconds).zfill(2)
 
     @property
     def isCounting(self):

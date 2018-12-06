@@ -111,6 +111,7 @@ class Timing():
         else:
             filename = c.BOLD_FONT_FILE if bold else c.FONT_FILE
             filepath = helpers.abspath('resources', 'fonts', filename)
+            print(filepath)
             return pygame.font.Font(filepath, size)
 
 
@@ -144,11 +145,12 @@ class Timing():
             self.timer.plus(1)
         if (key == pygame.K_DOWN):
             self.timer.minus(1)
-        # 左 / 右：增加减少五分钟
+
+        # 左 / 右：增加减少十分钟
         if (key == pygame.K_LEFT):
-            self.timer.minus(5)
+            self.timer.minus(10)
         if (key == pygame.K_RIGHT):
-            self.timer.plus(5)
+            self.timer.plus(10)
 
     def zoomIn(self):
         self.timer.zoomRatio = self.timer.zoomRatio * (1 + c.FONT_ZOOM_RATIO)
